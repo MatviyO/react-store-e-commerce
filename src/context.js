@@ -5,8 +5,22 @@ const ProductContext = React.createContext()
 
 class ProductProvider extends Component {
     state = {
-        products: storeProducts,
+        products: [],
         detailProduct: detailProduct
+    };
+    componentDidMount() {
+        this.setProducts()
+    }
+
+    setProducts = () => {
+        let tempProducts = []
+        storeProducts.forEach(item => {
+            const singleItem = {...item};
+            tempProducts = [...tempProducts, singleItem];
+        })
+        this.setState(() => {
+            return {products: tempProducts}
+        })
     }
     handleDetail = () => {
         console.log('details')
@@ -14,6 +28,7 @@ class ProductProvider extends Component {
     addToCard = () => {
         console.log('add to card')
     }
+
     render() {
         return (
             <ProductContext.Provider value={{
@@ -21,6 +36,7 @@ class ProductProvider extends Component {
                 handleDetail: this.handleDetail,
                 addToCard: this.addToCard
             }}>
+
                 {this.props.children}
             </ProductContext.Provider>
         );
