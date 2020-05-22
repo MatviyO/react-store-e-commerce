@@ -7,6 +7,7 @@ import ProductList from "./components/ProductList";
 import Details from "./components/Details";
 import Card from "./components/Card";
 import Default from "./components/Default";
+import Modal from "./components/Modal";
 
 function App() {
     return (
@@ -18,6 +19,7 @@ function App() {
                 <Route path="/card" component={Card}/>
                 <Route component={Default}/>
             </Switch>
+            <Modal />
         </React.Fragment>
     );
 }

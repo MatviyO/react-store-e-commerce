@@ -6,7 +6,11 @@ const ProductContext = React.createContext()
 class ProductProvider extends Component {
     state = {
         products: [],
-        detailProduct: detailProduct
+        detailProduct: detailProduct,
+        cart: [],
+        modalOpen: true,
+        modalProduct: detailProduct,
+
     };
     componentDidMount() {
         this.setProducts()
@@ -22,11 +26,41 @@ class ProductProvider extends Component {
             return {products: tempProducts}
         })
     }
-    handleDetail = () => {
-        console.log('details')
+    getItem = (id) => {
+        const product = this.state.products.find(item => item.id === id );
+        return product;
     }
-    addToCard = () => {
-        console.log('add to card')
+    handleDetail = (id) => {
+        const product = this.getItem(id);
+        console.log(product)
+        this.setState(() => {
+            return { detailProduct: product}
+        })
+    }
+    addToCard = (id) => {
+        let tempProducts = [...this.state.products];
+        const index = tempProducts.indexOf(this.getItem(id))
+        const product = tempProducts[index]
+        product.inCart = true;
+        product.count = 1
+        const price = product.price;
+        product.total = price
+        this.setState(() => {
+            return {products: tempProducts, cart: [...this.state.cart,product]}
+        }, () => {
+            console.log(this.state.cart)
+        })
+    };
+    openModal = id => {
+        const product = this.getItem(id);
+        this.setState(() => {
+            return {modalProduct: product, modalOpen: true}
+        })
+    }
+    closeModal = () => {
+        this.setState(() => {
+            return {modalOpen: false}
+        })
     }
 
     render() {
@@ -34,7 +68,9 @@ class ProductProvider extends Component {
             <ProductContext.Provider value={{
                 ...this.state,
                 handleDetail: this.handleDetail,
-                addToCard: this.addToCard
+                addToCard: this.addToCard,
+                openModal: this.openModal,
+                closeModal: this.closeModal
             }}>
 
                 {this.props.children}
