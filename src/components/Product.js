@@ -14,7 +14,6 @@ class Product extends Component {
                         {(value) => (
                             <div className="img-container p-5" onClick={() => {
                                 value.handleDetail(id)
-                                value.openModal(id)
                             }}>
                                 <Link to="/details">
                                     <img src={img} alt="product" className="card-img-top"/>
